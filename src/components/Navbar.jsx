@@ -9,7 +9,7 @@ const Navbar = () => {
     const navItems = [
         { href: "#Home", label: "Home" },
         { href: "#About", label: "About" },
-        { href: "#Portofolio", label: "Portofolio" },
+        { href: "#Portofolio", label: "Projects" },
         { href: "#Contact", label: "Contact" },
     ];
 
@@ -79,13 +79,7 @@ const Navbar = () => {
             <div className="flex items-center justify-between h-16">
                 {/* Logo */}
                 <div className="flex-shrink-0">
-                    <a
-                        href="#Home"
-                        onClick={(e) => scrollToSection(e, "#Home")}
-                        className="text-xl font-bold bg-gradient-to-r from-[#a855f7] to-[#6366f1] bg-clip-text text-transparent"
-                    >
-                        Ekizr
-                    </a>
+                    
                 </div>
     
                 {/* Desktop Navigation */}

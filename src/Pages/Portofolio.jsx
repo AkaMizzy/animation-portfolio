@@ -13,8 +13,7 @@ import CardProject from "../components/CardProject";
 import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Certificate from "../components/Certificate";
-import { Code, Award, Boxes } from "lucide-react";
+import { Code, Boxes } from "lucide-react";
 
 // Separate ShowMore/ShowLess button component
 const ToggleButton = ({ onClick, isShowingMore }) => (
@@ -101,27 +100,36 @@ function a11yProps(index) {
 }
 
 const techStacks = [
+
   { icon: "html.svg", language: "HTML" },
   { icon: "css.svg", language: "CSS" },
-  { icon: "javascript.svg", language: "JavaScript" },
   { icon: "tailwind.svg", language: "Tailwind CSS" },
-  { icon: "reactjs.svg", language: "ReactJS" },
-  { icon: "vite.svg", language: "Vite" },
-  { icon: "nodejs.svg", language: "Node JS" },
   { icon: "bootstrap.svg", language: "Bootstrap" },
-  { icon: "firebase.svg", language: "Firebase" },
-  { icon: "MUI.svg", language: "Material UI" },
-  { icon: "vercel.svg", language: "Vercel" },
-  { icon: "SweetAlert.svg", language: "SweetAlert2" },
+  { icon: "reactjs.svg", language: "ReactJS" },
+  { icon: "angular.svg", language: "Angular" },
+  { icon: "ionic.svg", language: "Ionic" },
+
+  { icon: "nodejs.svg", language: "Node JS" },
+  { icon: "php.svg", language: "PHP" },
+  { icon: "laravel.svg", language: "Laravel" },
+  { icon: "java.svg", language: "Java" },
+  { icon: "j2ee.svg", language: "J2EE" },
+
+  { icon: "mysql.svg", language: "MySQL" },
+  { icon: "mongodb.svg", language: "MongoDB" },
+
+  { icon: "git.svg", language: "Git" },
+  { icon: "gitlab.svg", language: "GitLab" },
+  { icon: "github.svg", language: "GitHub" },
+
+  { icon: "uml.svg", language: "UML" }
 ];
 
 export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [projects, setProjects] = useState([]);
-  const [certificates, setCertificates] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
-  const [showAllCertificates, setShowAllCertificates] = useState(false);
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 4 : 6;
 
@@ -135,12 +143,8 @@ export default function FullWidthTabs() {
   const fetchData = useCallback(async () => {
     try {
       const projectCollection = collection(db, "projects");
-      const certificateCollection = collection(db, "certificates");
 
-      const [projectSnapshot, certificateSnapshot] = await Promise.all([
-        getDocs(projectCollection),
-        getDocs(certificateCollection),
-      ]);
+      const projectSnapshot = await getDocs(projectCollection);
 
       const projectData = projectSnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -148,14 +152,10 @@ export default function FullWidthTabs() {
         TechStack: doc.data().TechStack || [],
       }));
 
-      const certificateData = certificateSnapshot.docs.map((doc) => doc.data());
-
       setProjects(projectData);
-      setCertificates(certificateData);
 
       // Store in localStorage
       localStorage.setItem("projects", JSON.stringify(projectData));
-      localStorage.setItem("certificates", JSON.stringify(certificateData));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -169,16 +169,11 @@ export default function FullWidthTabs() {
     setValue(newValue);
   };
 
-  const toggleShowMore = useCallback((type) => {
-    if (type === 'projects') {
-      setShowAllProjects(prev => !prev);
-    } else {
-      setShowAllCertificates(prev => !prev);
-    }
+  const toggleShowMore = useCallback(() => {
+    setShowAllProjects(prev => !prev);
   }, []);
 
   const displayedProjects = showAllProjects ? projects : projects.slice(0, initialItems);
-  const displayedCertificates = showAllCertificates ? certificates : certificates.slice(0, initialItems);
 
   return (
     <div className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden" id="Portofolio">
@@ -192,17 +187,17 @@ export default function FullWidthTabs() {
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
           }}>
-            Portfolio Showcase
+            Projects
           </span>
         </h2>
-        <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2">
-          Explore my journey through projects, certifications, and technical expertise. 
-          Each section represents a milestone in my continuous learning path.
+        <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2"> 
+        Découvrez mon parcours à travers mes projets et expertises techniques.
+        Chaque section illustre une étape clé de mon apprentissage continu
         </p>
       </div>
 
       <Box sx={{ width: "100%" }}>
-        {/* AppBar and Tabs section - unchanged */}
+        {/* AppBar and Tabs section - modified */}
         <AppBar
           position="static"
           elevation={0}
@@ -226,7 +221,6 @@ export default function FullWidthTabs() {
           }}
           className="md:px-4"
         >
-          {/* Tabs remain unchanged */}
           <Tabs
             value={value}
             onChange={handleChange}
@@ -234,7 +228,6 @@ export default function FullWidthTabs() {
             indicatorColor="secondary"
             variant="fullWidth"
             sx={{
-              // Existing styles remain unchanged
               minHeight: "70px",
               "& .MuiTab-root": {
                 fontSize: { xs: "0.9rem", md: "1rem" },
@@ -277,14 +270,9 @@ export default function FullWidthTabs() {
               {...a11yProps(0)}
             />
             <Tab
-              icon={<Award className="mb-2 w-5 h-5 transition-all duration-300" />}
-              label="Certificates"
-              {...a11yProps(1)}
-            />
-            <Tab
               icon={<Boxes className="mb-2 w-5 h-5 transition-all duration-300" />}
               label="Tech Stack"
-              {...a11yProps(2)}
+              {...a11yProps(1)}
             />
           </Tabs>
         </AppBar>
@@ -303,13 +291,13 @@ export default function FullWidthTabs() {
                     data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
                     data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                   >
-                    <CardProject
+                    {/* <CardProject
                       Img={project.Img}
                       Title={project.Title}
                       Description={project.Description}
                       Link={project.Link}
                       id={project.id}
-                    />
+                    /> */}
                   </div>
                 ))}
               </div>
@@ -317,7 +305,7 @@ export default function FullWidthTabs() {
             {projects.length > initialItems && (
               <div className="mt-6 w-full flex justify-start">
                 <ToggleButton
-                  onClick={() => toggleShowMore('projects')}
+                  onClick={toggleShowMore}
                   isShowingMore={showAllProjects}
                 />
               </div>
@@ -325,30 +313,6 @@ export default function FullWidthTabs() {
           </TabPanel>
 
           <TabPanel value={value} index={1} dir={theme.direction}>
-            <div className="container mx-auto flex justify-center items-center overflow-hidden">
-              <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5 gap-4">
-                {displayedCertificates.map((certificate, index) => (
-                  <div
-                    key={index}
-                    data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
-                    data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
-                  >
-                    <Certificate ImgSertif={certificate.Img} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            {certificates.length > initialItems && (
-              <div className="mt-6 w-full flex justify-start">
-                <ToggleButton
-                  onClick={() => toggleShowMore('certificates')}
-                  isShowingMore={showAllCertificates}
-                />
-              </div>
-            )}
-          </TabPanel>
-
-          <TabPanel value={value} index={2} dir={theme.direction}>
             <div className="container mx-auto flex justify-center items-center overflow-hidden pb-[5%]">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
                 {techStacks.map((stack, index) => (
