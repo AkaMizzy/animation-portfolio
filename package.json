@@ -32,8 +32,8 @@
     "gsap": "^3.12.5",
     "headlessui": "^0.0.0",
     "lucide-react": "^0.454.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-intersection-observer": "^9.13.1",
     "react-router-dom": "^6.28.0",
     "react-swipeable-views": "^0.14.0",
@@ -47,8 +47,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react": "^17.0.50",
+    "@types/react-dom": "^17.0.17",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.13.0",
@@ -62,8 +62,8 @@
     "vite": "^5.4.10"
   },
   "resolutions": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "engines": {
     "node": ">=14.0.0"
